@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS Problem 2</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var evenSum = 0;
+		var first = 0;
+		var second = 1;
+		var currentSum = 0;
+		while (currentSum < 4000000){
+			currentSum = first + second;
+			first = second;
+			second = currentSum;
+			if (currentSum % 2 === 0){
+				evenSum += currentSum;
+			}
+		}
+		document.write(evenSum);
+
+	</script>
+</body>
+</html>

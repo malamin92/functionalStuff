@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Js Probelm 3</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+
+	var isPrime = function(num){
+
+		if (num == 2){
+			return true;
+		}
+		else if(num%2 == 0){
+			return false;
+		}
+		else{
+			var i = 2;
+			while(i<num){
+
+				if((num%i) == 0 ){
+					return false;
+				}
+					i++
+			}
+			return true;
+		}
+
+	};
+
+	var largestPrime = function(check){
+		var largest = 0;
+		var j = 2;
+		while(j < check){
+			if(isPrime(j) && (check%j == 0)){
+				largest = j;
+			}
+			j++
+		}
+		return largest;
+	}
+
+
+	document.write(largestPrime(1000));
+	
+
+
+
+	</script>
+</body>
+</html>
