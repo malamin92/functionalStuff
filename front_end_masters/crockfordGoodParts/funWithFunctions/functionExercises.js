@@ -30,5 +30,15 @@ var liftf = function(binaryFunction) {
   };
 };
 
-var addfer = liftf(mul);
-console.log(addfer(3)(4));
+var curry = function(func, firstArg) {
+  return function insideFunc(secondArg) {
+    return func(firstArg, secondArg);
+  };
+};
+
+//var inc = addf(1);
+//console.log(inc(2));
+//var inc = liftf(add)(1);
+//console.log(inc(2));
+//var inc = curry(add, 1);
+//console.log(inc(2));
