@@ -95,3 +95,63 @@ var limit = function(binFunc, times) {
 //console.log(addLtd(3,5));
 //console.log(addLtd(3,4));
 //console.log(addLtd(3,5));
+
+var from = function(start) {
+  return function(){
+    var currentNumber = start;
+    start += 1;
+    return currentNumber;
+  };
+};
+
+//var index = from(5);
+//console.log(index());
+//console.log(index());
+//console.log(index());
+
+var to = function(genFunc, endVal) {
+  return function() {
+    var currentVal = genFunc();
+    if(currentVal < endVal) {
+      return currentVal;
+    }
+    return undefined;
+  };
+};
+
+//var index = to(from(1), 3);
+//console.log(index());
+//console.log(index());
+//console.log(index());
+
+var fromTo = function(start, finish){
+  return to(
+    from(start),
+    finish);
+};
+
+//var index = fromTo(0, 3);
+//console.log(index());
+//console.log(index());
+//console.log(index());
+//console.log(index());
+//console.log(index());
+//console.log(index());
+
+var element = function(arr, genFunc) {
+  return function() {
+    if(genFunc === undefined) {
+      genFunc = fromTo(0, arr.length);
+    }
+    var index = genFunc();
+    if(index !== undefined){
+      return arr[index];
+    }
+  };
+};
+
+var ele = element(['a', 'b', 'c', 'd']);
+console.log(ele());
+console.log(ele());
+console.log(ele());
+console.log(ele());
