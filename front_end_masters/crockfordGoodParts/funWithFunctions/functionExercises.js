@@ -150,8 +150,73 @@ var element = function(arr, genFunc) {
   };
 };
 
-var ele = element(['a', 'b', 'c', 'd']);
-console.log(ele());
-console.log(ele());
-console.log(ele());
-console.log(ele());
+//var ele = element(['a', 'b', 'c', 'd']);
+//console.log(ele());
+//console.log(ele());
+//console.log(ele());
+//console.log(ele());
+
+var collect = function(genFunc, array) {
+  return function(){
+    var val = genFunc();
+    if(val !== undefined) {
+      array.push(val);
+    }
+    return val;
+  };
+};
+
+var array = [], col = collect(fromTo(0,2), array);
+
+//console.log(col());
+//console.log(col());
+//console.log(col());
+//console.log(col());
+//console.log(array);
+
+var filter = function(genFunc, predicate) {
+  return function() {
+    var value;
+    do {
+      value = genFunc();
+    } while(
+      !predicate(value) && value !== undefined
+    );
+    return value;
+  };
+};
+
+var fil = filter(fromTo(0, 5), 
+  function third(value) {
+    return (value % 3) === 0;
+  }
+);
+
+//console.log(fil());
+//console.log(fil());
+//console.log(fil());
+//console.log(fil());
+//console.log(fil());
+//console.log(fil());
+
+var concat = function(genOne, genTwo) {
+  var gen = genOne;
+  return function(){
+    var val = gen();
+    if(val !== undefined) {
+      return val;
+    }
+    gen = genTwo;
+    return gen();
+  };
+};
+
+var con = concat(fromTo(0, 2), fromTo(0, 3));
+console.log(con());
+console.log(con());
+console.log(con());
+console.log(con());
+console.log(con());
+console.log(con());
+console.log(con());
+console.log(con());
