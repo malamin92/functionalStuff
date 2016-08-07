@@ -296,3 +296,39 @@ function revocable(binFunc) {
 //console.log(add_rev(3, 4));
 //rev.revoke();
 //console.log(add_rev(5, 7));
+
+function m(val, optionalString) {
+  return {
+    value: val,
+    optionalSourceString: (typeof optionalString === 'string') ? optionalString : String(val) 
+  };
+}
+
+//function addm(mOne, mTwo) {
+//  mOne.value = mOne.value + mTwo.value;
+//  mOne.optionalSourceString = mOne.optionalSourceString + "+" + mTwo.optionalSourceString;
+//  return mOne;
+//}
+
+function addm(mOne, mTwo) {
+  return m( mOne.value + mTwo.value, "(" + mOne.optionalSourceString + "+" + mTwo.optionalSourceString + ")" );
+}
+
+//console.log(JSON.stringify(addm(m(3), m(4))));
+//console.log(JSON.stringify(addm(m(1), m(Math.PI, "pi"))));
+
+function liftm(binaryFunc, str) {
+  return function(mOne, mTwo) {
+      var valOne = ( typeof mOne !== "number" ) ? mOne.value : mOne;
+      var valTwo = ( typeof mTwo !== "number" ) ? mTwo.value : mTwo;
+    return m(
+          binaryFunc(valOne, valTwo),
+          "(" + valOne + str + valTwo + ")"
+    );
+  };
+}
+
+var addmm = liftm(add, "+");
+console.log( JSON.stringify(addmm(m(3), m(4))) );
+console.log( JSON.stringify(liftm(mul, "*")(m(3), m(4))));
+console.log( JSON.stringify(liftm(mul, "*")(3, 3)) );
