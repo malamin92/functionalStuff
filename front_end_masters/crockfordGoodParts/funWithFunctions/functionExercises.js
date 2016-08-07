@@ -259,15 +259,40 @@ function fibonaccif(firstNum, secondNum) {
 
 function counter(num) {
   return {
-    up: return function() {
-      return num += 1
+    up: function() {
+      num += 1;
+      return num;
     },
-    down: return function() {
-      return num -= 1;
+    down: function() {
+      num += 1;
+      return num;
     }
   };
 }
 
-var obj = counter(10), up = obj.up, down = obj.down;
-console.log(up())
+//var obj = counter(10), up = obj.up, down = obj.down;
+//console.log(up());
+//console.log(down());
+//console.log(down());
+//console.log(down());
+//console.log(up());
 
+function revocable(binFunc) {
+  var revoked = false;
+  return {
+    invoke: function(valOne, valTwo) {
+      if ( !revoked ) {
+        return binFunc(valOne, valTwo);
+      }
+      return undefined;
+    },
+    revoke: function() {
+      revoked = true;
+    }
+  };
+}
+
+//var rev = revocable(add), add_rev = rev.invoke;
+//console.log(add_rev(3, 4));
+//rev.revoke();
+//console.log(add_rev(5, 7));
