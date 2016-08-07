@@ -211,12 +211,63 @@ var concat = function(genOne, genTwo) {
   };
 };
 
-var con = concat(fromTo(0, 2), fromTo(0, 3));
-console.log(con());
-console.log(con());
-console.log(con());
-console.log(con());
-console.log(con());
-console.log(con());
-console.log(con());
-console.log(con());
+//var con = concat(fromTo(0, 2), fromTo(0, 3));
+//console.log(con());
+//console.log(con());
+//console.log(con());
+//console.log(con());
+//console.log(con());
+//console.log(con());
+//console.log(con());
+//console.log(con());
+
+function gensymf(str) {
+  var currentNum = 0;
+  return function() {
+    currentNum += 1;
+    return str + currentNum;
+  };
+}
+
+//var geng = gensymf("G"), genh = gensymf("H");
+//console.log(geng());
+//console.log(genh());
+//console.log(geng());
+//console.log(genh());
+//console.log(geng());
+//console.log(genh());
+
+function fibonaccif(firstNum, secondNum) {
+  return function(){
+    var numToShow = firstNum;
+    var currSum = firstNum + secondNum;
+    firstNum = secondNum; secondNum = currSum;
+    return numToShow;
+  };
+}
+
+//var fib = fibonaccif(0, 1);
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+//console.log(fib());
+
+function counter(num) {
+  return {
+    up: return function() {
+      return num += 1
+    },
+    down: return function() {
+      return num -= 1;
+    }
+  };
+}
+
+var obj = counter(10), up = obj.up, down = obj.down;
+console.log(up())
+
