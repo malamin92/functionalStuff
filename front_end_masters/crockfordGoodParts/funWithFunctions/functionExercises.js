@@ -328,7 +328,81 @@ function liftm(binaryFunc, str) {
   };
 }
 
-var addmm = liftm(add, "+");
-console.log( JSON.stringify(addmm(m(3), m(4))) );
-console.log( JSON.stringify(liftm(mul, "*")(m(3), m(4))));
-console.log( JSON.stringify(liftm(mul, "*")(3, 3)) );
+//var addmm = liftm(add, "+");
+//console.log( JSON.stringify(addmm(m(3), m(4))) );
+//console.log( JSON.stringify(liftm(mul, "*")(m(3), m(4))));
+//console.log( JSON.stringify(liftm(mul, "*")(3, 3)) );
+
+function exp(arr) {
+  if(Array.isArray(arr)) {
+  return arr[0](exp(arr[1]), exp(arr[2]));
+  }
+  return arr;
+}
+
+//var sae = [ 
+//  Math.sqrt, 
+//  [
+//    add, 
+//    [square, 3],
+//    [square, 4]
+//  ]
+//];
+
+//console.log(exp(sae));
+//console.log(exp(44));
+
+function addg(arg) {
+  function addAgain(nextArg) {
+    if(nextArg === undefined) {
+      return arg;
+    }
+    arg += nextArg;
+    return addAgain;
+  }
+  if(arg !== undefined) {
+    return addAgain;
+  }
+}
+
+//console.log(addg(4)(4)(4)());
+
+function liftg(binFunc) {
+  return function(first) {
+    if(first === undefined) {
+      return first;
+    }
+    return function more(next) {
+      if(next === undefined) {
+        return first;
+      }
+      first = binFunc(first, next);
+      return more;
+    };
+  };
+}
+
+//console.log(liftg(mul)(3)(2)(4)(3)());
+
+function arrayg(arg) {
+  array = [];
+  function more(next) {
+    if(next === undefined) {
+      return array;
+    }
+    array.push(next);
+    return more;
+  }
+  return more(arg);
+}
+
+//console.log(arrayg(3)(4)());
+
+function continuize(unary) {
+  return function(callback, arg) {
+    callback(unary(arg));
+  };
+}
+
+var sqrt = continuize(Math.sqrt);
+sqrt(console.log, 16);
