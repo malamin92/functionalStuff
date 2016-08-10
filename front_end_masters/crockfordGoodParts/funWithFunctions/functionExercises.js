@@ -404,5 +404,37 @@ function continuize(unary) {
   };
 }
 
-var sqrt = continuize(Math.sqrt);
-sqrt(console.log, 16);
+//var sqrt = continuize(Math.sqrt);
+//sqrt(console.log, 16);
+
+function vector() {
+  var array = [];
+
+  return {
+    get: function get(i) {
+      return array[i];
+    },
+    store: function store(i, v) {
+      array[i] = v;
+    },
+    append: function append(v) {
+      array.push(v);
+    }
+  };
+}
+
+var vec = vector();
+vec.append(1);
+vec.append(2);
+vec.append(3);
+vec.append(4);
+
+//var stash;
+//vec.store("push", function() {
+//  stash = this;
+//});
+//
+//console.log(vec.append());
+//console.log(stash);
+
+
