@@ -1,6 +1,9 @@
 // 05 Context
 DOT = function(obj, prop){
-
+  if( obj.hasOwnProperty(prop) ){
+    return obj[prop];
+  } 
+  return DOT( obj.__proto__, prop );
 }
 
 // 05 Context
