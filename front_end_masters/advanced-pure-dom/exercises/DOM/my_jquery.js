@@ -1,14 +1,43 @@
 (function() {
   $ = function(selector) {};
 
-  $.extend = function(target, object) {};
+  $.extend = function(target, object) {
+    for ( var prop in object ) {
+      target[prop] = object[prop];
+    }
+    return target;
+  };
 
   // Static methods
-  var isArrayLike = function(obj) {};
+  var isArrayLike = function(obj) {
+    if( typeof obj.length === "number" ) {
+      if( obj.length === 0 ){
+        return true;
+      } else if( obj.length > 0 ) {
+          return ( obj.length -1 ) in obj ;
+      }
+    }
+    return false;
+  };
 
   $.extend($, {
-    isArray: function(obj) {},
-    each: function(collection, cb) {},
+    isArray: function(obj) {
+      return Object.prototype.toString.call(obj) === "[object Array]";
+    },
+    each: function(collection, cb) {
+      if( isArrayLike( collection ) ) {
+        for( var i = 0; i < collection.length; i++ ){
+          cb.call( collection[i], i, collection[i] );
+        }
+      } else {
+        for(var prop in collection) {
+          if(collection.hasOwnProperty(prop)) {
+            cb.call(collection[prop], prop, collection[prop]);
+          }
+        }
+      }
+      return collection;
+    },
     makeArray: function(arr) {},
     proxy: function(fn, context) {}
   });
@@ -40,13 +69,13 @@
     unbind: function(eventName, handler) {},
     has: function(selector) {
       var elements = [];
-	
+
       $.each(this, function(i, el) {
         if(el.matches(selector)) {
           elements.push(el);
         }
       });
-    
+
       return $( elements );
     },
     on: function(eventType, selector, handler) {
