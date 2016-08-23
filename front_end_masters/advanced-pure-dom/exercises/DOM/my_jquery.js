@@ -1,8 +1,15 @@
 (function() {
-  $ = function(selector) {};
+  $ = function(selector) {
+    var elements = document.querySelectorAll(selector)
+    Array.prototype.push.apply(this, elements);
+    //for(var i = 0; i < elements.length; i++) {
+    //  this[i] = elements[i];
+    //}
+    //this.length = elements.length;
+      
+  };
 
-  $.extend = function(target, object) {
-    for ( var prop in object ) {
+  $.extend = function(target, object) { for ( var prop in object ) {
       target[prop] = object[prop];
     }
     return target;
@@ -38,12 +45,31 @@
       }
       return collection;
     },
-    makeArray: function(arr) {},
-    proxy: function(fn, context) {}
+    makeArray: function(arr) {
+      var array = [];
+      $.each(arr, function(i, val){
+        array.push(val);
+      })
+      return array;
+    },
+    proxy: function(fn, context) {
+      return function(){
+        return fn.apply(context, arguments);
+      }
+    }
   });
 
   $.extend($.prototype, {
-    html: function(newHtml) {},
+    html: function(newHtml) {
+      if(arguments.length){
+        $.each(this, function(index, elem){
+          elem.innerHTML = newHtml;
+        })
+        return this;
+      } else {
+        return this[0].innerHTML;
+      }
+    },
     val: function(newVal) {},
     text: function(newText) {},
     find: function(selector) {},
