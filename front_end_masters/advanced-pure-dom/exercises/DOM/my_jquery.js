@@ -1,11 +1,23 @@
 (function() {
   $ = function(selector) {
-    var elements = document.querySelectorAll(selector)
-    Array.prototype.push.apply(this, elements);
-    //for(var i = 0; i < elements.length; i++) {
-    //  this[i] = elements[i];
-    //}
-    //this.length = elements.length;
+    if(!( this instanceof $ ) ){
+      return new $(selector);
+    }
+    
+    var elements;
+    
+    if(typeof selector === "string"){
+      elements = document.querySelectorAll(selector);
+    } else {
+      elements = selector;
+    }
+
+  Array.prototype.push.apply(this, elements)
+
+   // for(var i = 0; i < elements.length; i++) {
+   //   this[i] = elements[i];
+   // }
+   // this.length = elements.length;
       
   };
 
@@ -59,6 +71,18 @@
     }
   });
 
+  var getText = function(childNodes) {
+    var text = "";
+    $.each(childNodes, function(i, child) {
+      if (child.nodeType === 3) {
+        text += child.nodeValue;
+      } else {
+        text += getText(child.childNodes);
+      }
+    });
+    return text;
+  };
+
   $.extend($.prototype, {
     html: function(newHtml) {
       if(arguments.length){
@@ -70,9 +94,38 @@
         return this[0].innerHTML;
       }
     },
-    val: function(newVal) {},
-    text: function(newText) {},
-    find: function(selector) {},
+    val: function(newVal) {
+      if(arguments.length){
+        $.each(this, function(index, elem){
+          return elem.value = newVal;
+        })
+        return this;
+      } else {
+        return this[0].value;
+      }
+    },
+    text: function(newText) {
+      if (arguments.length) {
+        this.html("");
+        return $.each(this, function(i, element) {
+          var textNode = document.createTextNode(newText);
+          element.appendChild(textNode);
+        });
+      } else {
+        return getText(this[0].childNodes);
+      }
+    },
+    find: function(selector) {
+      elements = [];
+      console.log(selector);
+
+      $.each(this, function(index, element){
+        var elems = element.querySelectorAll(selector);
+        Array.prototype.push.apply(elements, elems);
+      });
+
+      return $(elements);
+    },
     next: function() {},
     prev: function() {},
     parent: function() {},
