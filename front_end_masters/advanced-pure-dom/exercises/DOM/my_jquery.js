@@ -1,31 +1,31 @@
 (function() {
   $ = function(selector) {
-    
+
     if(!( this instanceof $ ) ){
       return new $(selector);
     }
-    
+
     var elements;
-    
+
     if(typeof selector === "string"){
       elements = document.querySelectorAll(selector);
     } else {
       elements = selector;
     }
 
-  Array.prototype.push.apply(this, elements)
+    Array.prototype.push.apply(this, elements)
 
-   // for(var i = 0; i < elements.length; i++) {
-   //   this[i] = elements[i];
-   // }
-   // this.length = elements.length;
-      
+      // for(var i = 0; i < elements.length; i++) {
+      //   this[i] = elements[i];
+      // }
+      // this.length = elements.length;
+
   };
 
   $.extend = function(target, object) { for ( var prop in object ) {
-      target[prop] = object[prop];
-    }
-    return target;
+    target[prop] = object[prop];
+  }
+  return target;
   };
 
   // Static methods
@@ -34,7 +34,7 @@
       if( obj.length === 0 ){
         return true;
       } else if( obj.length > 0 ) {
-          return ( obj.length -1 ) in obj ;
+        return ( obj.length -1 ) in obj ;
       }
     }
     return false;
@@ -71,6 +71,24 @@
       }
     }
   });
+
+  var makeTraverser = function(cb){
+    return function() {
+      var elements = [], args = arguments;
+
+      $.each(this, function(index, element){
+        var ret = cb.apply(element, args);
+
+        if(ret && isArrayLike(ret)) {
+          [].push.apply( elements, ret );
+        } else if(ret) {
+          elements.push( ret )
+        }
+      });
+
+      return $(elements);
+    }
+  }
 
   var getText = function(childNodes) {
     var text = "";
@@ -127,50 +145,59 @@
 
       return $(elements);
     },
-    next: function() {
-      elemArray = [];
+    next: makeTraverser(function(){
+      var current = this.nextSibling;
 
-      $.each(this, function(index, element) {
-        var current = element.nextSibling;
-        
-        while(current && current.nodeType != 1){
-          current = current.nextSibling;
-        }
+      while(current && current.nodeType != 1){
+        current = current.nextSibling;
+      }
 
-        if( current ) {
-          elemArray.push(current);
-        }
-        //if( element.nextSibling.nodeType === 1 ){
-        //  elemArray.push(element);
-        //} else if( element.nextSibling.nodeType === 3 ){
-        //  element.next();
-        //} 
-      });
+      if(current){
+        return current;
+      }
+    }),
+    prev: makeTraverser(function(){
+      var current = this.previousSibling;
 
-      return $(elemArray);
+      while( current && current.nodeType != 1 ){
+        current = current.previousSibling;
+      }
+
+      if( current ) {
+        return current;
+      }
+    }),
+    parent: makeTraverser(function(){
+      return this.parentNode;
+    }),
+    children: makeTraverser(function(){
+      return this.children;
+    }),
+    attr: function(attrName, value) {
+      if( arguments.length > 1 ){
+        $.each(this, function(index, element){
+          return element.setAttribute( attrName, value );
+        });
+      } else {
+        return this[0]  && this[0].getAttribute(attrName);
+      }
     },
-    prev: function() {
-      elementsArray = [];
-
-      $.each(this, function(index, element) {
-        var current = element.previousSibling;
-
-        while( current && current.nodeType != 1 ){
-          current = current.previousSibling;
-        }
-        
-        if(current) {
-          elementsArray.push( current );
-        }
-      });
-
-      return $( elementsArray );
+    css: function(cssPropName, value) {
+      if( arguments.length > 1 ){
+        $.each(this, function(index, element){
+          return element.style[cssPropName] = value;
+        });
+      } else {
+        return this[0]  && document.defaultView.getComputedStyle(this[0]).getPropertyValue(cssPropName);
+      }
     },
-    parent: function() {},
-    children: function() {},
-    attr: function(attrName, value) {},
-    css: function(cssPropName, value) {},
-    width: function() {},
+    width: function() {
+      var clientWidth = this[0].clientWidth;
+      var leftPadding = this.css("padding-left"),
+          rightPadding = this.css("padding-right");
+
+      return clientWidth - parseInt(leftPadding) - parseInt(rightPadding);
+    },
     offset: function() {
       var offset = this[0].getBoundingClientRect();
       return {
