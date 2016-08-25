@@ -1,5 +1,6 @@
 (function() {
   $ = function(selector) {
+    
     if(!( this instanceof $ ) ){
       return new $(selector);
     }
@@ -126,8 +127,45 @@
 
       return $(elements);
     },
-    next: function() {},
-    prev: function() {},
+    next: function() {
+      elemArray = [];
+
+      $.each(this, function(index, element) {
+        var current = element.nextSibling;
+        
+        while(current && current.nodeType != 1){
+          current = current.nextSibling;
+        }
+
+        if( current ) {
+          elemArray.push(current);
+        }
+        //if( element.nextSibling.nodeType === 1 ){
+        //  elemArray.push(element);
+        //} else if( element.nextSibling.nodeType === 3 ){
+        //  element.next();
+        //} 
+      });
+
+      return $(elemArray);
+    },
+    prev: function() {
+      elementsArray = [];
+
+      $.each(this, function(index, element) {
+        var current = element.previousSibling;
+
+        while( current && current.nodeType != 1 ){
+          current = current.previousSibling;
+        }
+        
+        if(current) {
+          elementsArray.push( current );
+        }
+      });
+
+      return $( elementsArray );
+    },
     parent: function() {},
     children: function() {},
     attr: function(attrName, value) {},
