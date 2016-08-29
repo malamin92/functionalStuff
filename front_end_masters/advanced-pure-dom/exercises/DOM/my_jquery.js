@@ -1,31 +1,23 @@
 (function() {
   $ = function(selector) {
-
-    if(!( this instanceof $ ) ){
+    if (!(this instanceof $)) {
       return new $(selector);
     }
-
     var elements;
-
-    if(typeof selector === "string"){
+    if (typeof selector === "string") {
       elements = document.querySelectorAll(selector);
-    } else {
+    } else if ($.isArray(selector)) {
       elements = selector;
     }
-
-    Array.prototype.push.apply(this, elements)
-
-      // for(var i = 0; i < elements.length; i++) {
-      //   this[i] = elements[i];
-      // }
-      // this.length = elements.length;
-
+    [].push.apply(this, elements);
   };
-
-  $.extend = function(target, object) { for ( var prop in object ) {
-    target[prop] = object[prop];
-  }
-  return target;
+  $.extend = function(target, object) {
+    for (var prop in object) {
+      if (object.hasOwnProperty(prop)) {
+        target[prop] = object[prop];
+      }
+    }
+    return target;
   };
 
   // Static methods
@@ -175,8 +167,8 @@
     }),
     attr: function(attrName, value) {
       if( arguments.length > 1 ){
-        $.each(this, function(index, element){
-          return element.setAttribute( attrName, value );
+        return $.each(this, function(index, element){
+          element.setAttribute( attrName, value );
         });
       } else {
         return this[0]  && this[0].getAttribute(attrName);
@@ -184,8 +176,8 @@
     },
     css: function(cssPropName, value) {
       if( arguments.length > 1 ){
-        $.each(this, function(index, element){
-          return element.style[cssPropName] = value;
+        return $.each(this, function(index, element){
+          element.style[cssPropName] = value;
         });
       } else {
         return this[0]  && document.defaultView.getComputedStyle(this[0]).getPropertyValue(cssPropName);
@@ -204,13 +196,26 @@
         top: offset.top + window.pageYOffset,
         left: offset.left + window.pageXOffset
       };
+    },    
+    hide: function() {
+      return this.css("display", "none");
     },
-    hide: function() {},
-    show: function() {},
+    show: function() {
+      return this.css("display", "");
+    },
 
     // Events
-    bind: function(eventName, handler) {},
-    unbind: function(eventName, handler) {},
+    bind: function(eventName, handler) {
+      $.each(this, function(index, element){
+        element.addEventListener(eventName, handler, false);
+      });
+    },
+    unbind: function(eventName, handler) {
+      $.each(this, function(index, element){
+        element.removeEventListener(eventName, handler, false);
+      })
+
+    },
     has: function(selector) {
       var elements = [];
 
