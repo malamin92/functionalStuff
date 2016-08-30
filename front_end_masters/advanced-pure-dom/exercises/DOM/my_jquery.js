@@ -158,7 +158,7 @@
     },
     width: function() {
       var paddingLeft = parseInt(this.css("padding-left"), 10),
-      paddingRight = parseInt(this.css("padding-right"), 10);
+        paddingRight = parseInt(this.css("padding-right"), 10);
       return this[0].clientWidth - paddingLeft - paddingRight;
     },
     offset: function() {
