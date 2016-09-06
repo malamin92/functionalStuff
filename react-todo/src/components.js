@@ -2,10 +2,10 @@ import React from 'react';
 
 export function Todo(props) {
     const { todo } = props;
-    if(todo.isDone) {
-        return <strike> { todo.text } </strike>;
+    if(todo.get('isDone')) {
+        return <strike> { todo.get('text') } </strike>;
     } else {
-        return <span> {todo.text} </span>;
+        return <span> {todo.get('text') } </span>;
     }
 }
 
