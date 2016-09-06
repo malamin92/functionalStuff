@@ -1,4 +1,4 @@
-var NotesManager = ( function() {
+var NotesManager = (function() {
 
   function addNote(note) {
     $("#notes").prepend(
