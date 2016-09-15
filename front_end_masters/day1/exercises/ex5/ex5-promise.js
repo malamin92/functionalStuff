@@ -35,7 +35,7 @@ var p3 = getFile("file3");
 // but only once previous rendering
 // is done.
 p1
-.then(output)
+.then(output)q
 .then(function(){
 	return p2;
 })
