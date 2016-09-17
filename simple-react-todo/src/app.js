@@ -1,17 +1,32 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TodoList = require('./components/TodoList')
+var TodoList = require('./components/TodoList');
+var TodoForm = require('./components/TodoForm');
+require('bootstrap/dist/css/bootstrap.css');
+require('./styles/todo-list.scss');
 
 const todos = [
 { task: "Eat", complete: false},
 { task: "Sleep", complete: false},
-{ tast: "Study", complete: true } ];
+{ task: "Study", complete: true } ];
 
 var App = React.createClass({
+    getInitialState: function(){
+        return {todos};
+    },
     render: function(){
         return(
-            <div>
-                <TodoList todos={todos} />
+            <div id="todo-list-wrapper">
+                <div className="container">
+                    <div className="col-xs-6 offset-xs-3">
+                        <div className="row">
+                            <TodoForm />
+                        </div>   
+                        <div className="row">
+                             <TodoList todos={todos} />
+                        </div>      
+                     </div>
+                </div>
             </div>
         );
     }
