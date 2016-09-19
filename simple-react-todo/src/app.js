@@ -20,7 +20,7 @@ var App = React.createClass({
                 <div className="container">
                     <div className="col-xs-6 offset-xs-3">
                         <div className="row">
-                            <TodoForm />
+                            <TodoForm todos={todos}/>
                         </div>   
                         <div className="row">
                              <TodoList todos={todos} />
