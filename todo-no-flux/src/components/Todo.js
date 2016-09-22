@@ -2,8 +2,9 @@ var React = require('react');
 var { render } = require('react-dom');
 
 var Todo = React.createClass({
-    handleClick(){
-        this.props.clickHandler();
+  handleClick(){
+        var task = this.props.todo;
+        this.props.clickHandler( task );
     },
     render: function() {
         if( this.props.todo.completed === true){

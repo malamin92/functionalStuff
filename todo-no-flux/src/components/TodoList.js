@@ -1,8 +1,8 @@
 var React = require('react');
 var Todo = require('./Todo');
 
-const todos = [ {task: "Eat", completed: false}, 
-            {task: "Breathe", completed: false}, 
+const todos = [ {task: "Eat", completed: false},
+            {task: "Breathe", completed: false},
             {task: "Sleep", completed: false}];
 
 var TodoList = React.createClass({
@@ -12,7 +12,7 @@ var TodoList = React.createClass({
     changeTodoStatus (task) {
         var updatedTodos = this.state.todos.map(function(todo){
             if (task.task === todo.task) {
-                return {task: todo.task, completed: !todo.completed}
+                return {task: todo.task, completed: !todo.completed};
             } else {
                 return todo;
             }
@@ -24,17 +24,17 @@ var TodoList = React.createClass({
         return(
             <div className="container">
                 <div className="row list-of-things">
-                    <ul className="list-group"> 
+                    <ul className="list-group">
                         {
-                            this.state.todos.map( function(todo, index) {
-                                return <Todo clickHandler={ _that.changeTodoStatus.bind(_that, todo) } key={index} todo={todo} />
+                          this.state.todos.map( (todo, index) => {
+                                return (<Todo clickHandler={ this.changeTodoStatus } key={index} todo={todo} />);
                             })
                         }
                     </ul>
                 </div>
             </div>
         );
-    }        
+    }
 });
 
 module.exports = TodoList;

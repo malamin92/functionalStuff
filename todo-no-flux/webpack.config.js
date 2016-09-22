@@ -21,5 +21,6 @@ module.exports = {
     },
     devServer: {
         inline: true
-    }
-}
+    },
+    esversion: 6
+};
