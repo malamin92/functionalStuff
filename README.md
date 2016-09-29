@@ -19,3 +19,6 @@ In this repo, I will keep copies of all the exercises that I will do during the 
 such things as building an app using a framework, I will create different repos. This repo will only cover parts concerning the
 very fundementals of javascript and nothing more.
 
+###
+
+I did a simple todo list in react, without any template architecture or data store, just a client side todo to see how react works.
