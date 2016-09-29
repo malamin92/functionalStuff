@@ -18,6 +18,14 @@ var TodoList = React.createClass({
     });
     this.setState({todos: updatedTodos});
   },
+  clearAllButton() {
+    if( !(this.state.todos.length === 0) ){
+      return(<button className="btn btn-danger pull-xs-right" style={{marginTop: "10px"}} onClick={this.clearAll}>Clear All</button>)
+    }
+  },
+  clearAll() {
+    this.setState({todos: []});
+  },
   addTodo: function(todo) {
     var newState = this.state.todos.slice(0)
     newState.push({task: todo, completed: false});
@@ -45,6 +53,7 @@ var TodoList = React.createClass({
                 </ul> 
               }
           </div>
+          { this.clearAllButton() }
         </div>
       </div>
     );
