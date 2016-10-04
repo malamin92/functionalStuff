@@ -29,7 +29,6 @@ var TodoList = React.createClass({
   addTodo: function(todo) {
     var newState = this.state.todos.slice(0)
     newState.push({task: todo, completed: false});
-    console.log(newState);
     this.setState({todos: newState});
   },
   render: function() {
